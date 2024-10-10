@@ -74,7 +74,7 @@ const Cart = () => {
   };
 
   const handelPayment = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const transactionId = generateTransactionId();
     await getHash(transactionId);
   };
@@ -82,20 +82,21 @@ const Cart = () => {
   const getHash = async (transactionId) => {
     try {
       const paymentData = {
-        name: FormData.name,
+        name: FormData.firstname,
         email: FormData.email,
         phonenumber: FormData.phonenumber,
         amount: FinaleAmount,
-        transactionId: transactionId,
-        productinfo: "Ghash ka tel"
+        txnid:transactionId,
+        productinfo: "Ghash ka tel" 
       };
+     
       const response = await axios.post(`${BASE_URL}/api/payments/gethash`, paymentData);
-      const { hash, transactionId: newTransactionId } = response.data;
+      const { hash, txnid } = response.data;
       setHashs(hash);
-      setNewTransactionId(newTransactionId);
-      document.getElementById('payuForm').submit();
+      // setNewTransactionId(txnid);
+      // document.getElementById('payuForm').submit();
     } catch (error) {
-      console.error("Error getting hash:", error);
+      // console.error("Error getting hash:", error);
       alert("An error occurred while processing your payment. Please try again.");
     }
   };
@@ -171,8 +172,12 @@ const Cart = () => {
             <h1 className='font-[600] text-center text-[20px]'>Details</h1>
             <br/>
             <form>
-            <label>Name</label>
-            <input className='border-[1px] rounded-[10px] p-2 w-[100%]' name="name" type='text' onChange={handleChange}/>
+            <label>First Name</label>
+            <input className='border-[1px] rounded-[10px] p-2 w-[100%]' name="firstname" type='text' onChange={handleChange}/>
+            <br/>
+            <br/>
+            <label>Last Name</label>
+            <input className='border-[1px] rounded-[10px] p-2 w-[100%]' name="lastname" type='text' onChange={handleChange}/>
             <br/>
             <br/>
 
@@ -270,10 +275,11 @@ const Cart = () => {
             }else{
               setCurrentPage(prev => prev + 1);
             }
+            handelPayment();
           }} 
-          className='w-48 text-center p-2 rounded bg-brand_colors text-white'
+          className={currentPage <= 2 ?`w-48 text-center p-2 rounded bg-brand_colors text-white`:''}
         >
-          {currentPage >= 2 ? `Pay Now ${FinaleAmount?.toLocaleString()}rs` : 'Next'}
+          {currentPage <= 2 ? `Next` : ''}
         </button>
         {currentPage === 2 && (
           <button 
@@ -286,21 +292,27 @@ const Cart = () => {
         {currentPage === 3 && (
           <button 
             className='w-48 text-center p-2 rounded bg-brand_colors text-white' 
-            onClick={handelPayment}  
+            // onClick={handelPayment}  
+            onClick={
+              ()=>{
+             
+                document.getElementById('payuForm').submit();
+              }
+            }
           >
-            Pay Now ₹{FinaleAmount?.toLocaleString()}
+            Pay ₹{FinaleAmount?.toLocaleString()}
           </button>
         )}
-        <form id="payuForm" action='https://secure.payu.in/_payment' method='post'>
-<input type="hidden" name="key" value={process.env.NEXT_PUBLIC_PAYU_KEY} />
+        <form id="payuForm"  action="https://secure.payu.in/_payment" method='post'>
+<input type="hidden" name="key" value="qRhovz" />
 <input type="hidden" name="txnid" value={TransactinIds} />
-<input type="hidden" name="productinfo" value={"Ghash Ka Tel"} />
-<input type="hidden" name="amount" value="1" />
+<input type="hidden" name="productinfo" value="Ghash ka tel" />
+<input type="hidden" name="amount" value={FinaleAmount} />
 <input type="hidden" name="email" value={FormData.email} />
-<input type="hidden" name="firstname" value={FormData.name} />
-<input type="hidden" name="lastname" value="Kumar" />
-<input type="hidden" name="surl" value="https://apiplayground-response.herokuapp.com/" />
-<input type="hidden" name="furl" value="https://apiplayground-response.herokuapp.com/" />
+<input type="hidden" name="firstname" value={FormData.firstname} />
+{/* <input type="hidden" name="lastname" value="verma" /> */}
+ <input type="hidden" name="surl" value={`${BASE_URL}/success`} /> 
+<input type="hidden" name="furl" value={`${BASE_URL}/failure`} /> 
 <input type="hidden" name="phone" value={FormData.phonenumber}/>
 <input 
   type="hidden" 
@@ -308,9 +320,14 @@ const Cart = () => {
   value={Hashs} 
 />
 
-<input type="submit" value="submit"/> 
+<input type="submit" value=""/> 
 
 </form>
+
+
+
+
+
       </div>
     </section>
   );
