@@ -23,7 +23,7 @@ const Home = () => {
           mainTitle: "Ethical & Sustainable",
           content: "We are committed to ethical sourcing and sustainable practices. Our eco-friendly products and packaging help reduce your carbon footprint."
         },
-        {
+        {  
           icon: "🧖‍♀️",
           mainTitle: "Holistic Wellness",
           content: "We believe in holistic well-being. Our products are designed to nourish your body, mind, and soul, promoting a balanced and healthy lifestyle."
@@ -44,7 +44,7 @@ const Home = () => {
   Elevate Your Well-Being with Nature&apos;s Touch:
   <span className='text-brand_color'>Discover the Power of Premium Ayurvedic & Products and Expertly Crafted Formulations</span>
 </h2>
-
+ 
       <br/>
      <HomeHeroButton/>
       </div>
