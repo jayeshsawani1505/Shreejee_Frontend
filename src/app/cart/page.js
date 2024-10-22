@@ -172,6 +172,16 @@ const Cart = () => {
             <h1 className='font-[600] text-center text-[20px]'>Details</h1>
             <br/>
             <form>
+            <label>Title</label>
+            <select onChange={(e) => setSelectedTitle(e.target.value)} className='border-[1px] rounded-[10px] p-2 w-[100%]'>
+            <option value="">Select Title</option>
+            <option value="Mr.">Mr.</option>
+            <option value="Mrs.">Mrs.</option>
+            <option value="Ms.">Ms.</option>
+            <option value="Miss">Miss</option>
+            </select>
+            <br/>
+            <br/>
             <label>First Name</label>
             <input className='border-[1px] rounded-[10px] p-2 w-[100%]' name="firstname" type='text' onChange={handleChange}/>
             <br/>
